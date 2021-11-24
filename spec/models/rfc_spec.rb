@@ -72,4 +72,12 @@ RSpec.describe Rfc, type: :model do
     expect(rfc).to have_attributes(key: 'CAVN900529')
   end
 
+  it "count was increased" do
+    rfc = Rfc.new(rfc_valid_attributes)
+    rfc.save
+    rfc.save
+
+    expect(rfc.count).to eq 2
+  end
+
 end

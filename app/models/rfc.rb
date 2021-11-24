@@ -17,7 +17,7 @@ class Rfc < ApplicationRecord
 
   # Callbacks
   after_initialize :build_key
-
+  before_update :increase_count
 
   def real_date
     unless (Date.parse birthdate rescue false)
@@ -36,6 +36,10 @@ class Rfc < ApplicationRecord
       rfc_date.month.to_s.rjust(2, "0")        +
       rfc_date.day.to_s.rjust(2, "0")
     ).upcase
+  end
+
+  def increase_count
+    self.count = count + 1
   end
 
 end
