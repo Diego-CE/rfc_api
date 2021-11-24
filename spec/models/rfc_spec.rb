@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Rfc, type: :model do
 
-  context "attributes validations" do
+  rfc_valid_attributes = {name: 'Nancy', last_name: 'Chávez',
+    second_last_name: 'Vázquez', birthdate: '1990-05-29'}
 
-    rfc_valid_attributes = {name: 'Nancy', last_name: 'Chávez',
-      second_last_name: 'Vázquez', birthdate: '1990-05-29'}
+  context "attributes validations" do
 
     it "have valid attributes" do
       rfc = Rfc.new(rfc_valid_attributes)
@@ -65,6 +65,11 @@ RSpec.describe Rfc, type: :model do
       rfc.birthdate = "1990/05/29"
       expect(rfc).to_not be_valid
     end
+  end
+
+  it "build a valid key" do
+    rfc = Rfc.new(rfc_valid_attributes)
+    expect(rfc).to have_attributes(key: 'CAVN900529')
   end
 
 end
