@@ -30,7 +30,7 @@ RSpec.describe Rfc, type: :model do
       expect(rfc).to_not be_valid
     end
 
-    it "have a invalid last_name" do
+    it "have an invalid last_name" do
       rfc = Rfc.new(rfc_valid_attributes)
       rfc.last_name = "Cháv3z*"
       expect(rfc).to_not be_valid
@@ -42,7 +42,7 @@ RSpec.describe Rfc, type: :model do
       expect(rfc).to_not be_valid
     end
 
-    it "have a invalid last_name" do
+    it "have an invalid last_name" do
       rfc = Rfc.new(rfc_valid_attributes)
       rfc.second_last_name = "Vázqu3z*"
       expect(rfc).to_not be_valid
@@ -54,13 +54,13 @@ RSpec.describe Rfc, type: :model do
       expect(rfc).to_not be_valid
     end
 
-    it "have a invalid date" do
+    it "have an invalid date" do
       rfc = Rfc.new(rfc_valid_attributes)
       rfc.birthdate = "1990-05-32"
-      expect(rfc).to_not be valid
+      expect(rfc).to_not be_valid
     end
 
-    it "have a invalid date format" do
+    it "have an invalid date format" do
       rfc = Rfc.new(rfc_valid_attributes)
       rfc.birthdate = "1990/05/29"
       expect(rfc).to_not be_valid
