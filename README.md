@@ -1,24 +1,27 @@
-# README
+# RFC API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This API is for generate a RFC (México), the service cannot generate the 'homoclave' so this generator is complety unofficial.
 
-Things you may want to cover:
+* Ruby version: 3.0.2
+* Rails version: 6.1.4.1
+* Database: PostgreSQL
 
-* Ruby version
+**Usage**
 
-* System dependencies
+Visit: ´https://rfc-api-demo.herokuapp.com/rfc/new´
 
-* Configuration
+**Require parameters**
+´´´
+{
+  "name": *String*,
+  "last_name": *String*,
+  "second_last_name": *String*,
+  "birthdate": *String* (YYYY-MM-DD)
+}
 
-* Database creation
+**Response**
+{
+  "rfc": *String*,
+  "count": *Integer*
+}
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
