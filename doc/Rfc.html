@@ -160,7 +160,7 @@
 <p>Custom method for handle the increase count when the key was asked before.</p>
 
           <div class="method-source-code" id="create_if_not_exists-source">
-            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 67</span>
+            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">create_if_not_exists</span>(<span class="ruby-identifier">attr</span> = {})
   <span class="ruby-identifier">new_rfc</span> = <span class="ruby-constant">Rfc</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">attr</span>)
   <span class="ruby-identifier">rfc</span> = <span class="ruby-constant">Rfc</span>.<span class="ruby-identifier">find_by_key</span>(<span class="ruby-identifier">new_rfc</span>.<span class="ruby-identifier">key</span>)
@@ -199,7 +199,7 @@
 
 <p>+First 2 chars+ Came from the first char and first vowel of last name</p>
 
-<p>+Third char+ Came from the first char of second last name</p>
+<p>+Third char+ Came from the first char of second last name, if doesn&#39;t have a second last name then uses X</p>
 
 <p>+Fourth char+ Came from the first char of name</p>
 
@@ -210,18 +210,18 @@
 <p>+Eighth char+ Came from birth day in 2 digits format ( 1st = 01 )</p>
 
           <div class="method-source-code" id="build_key-source">
-            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">build_key</span>
   <span class="ruby-identifier">rfc_date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span> <span class="ruby-identifier">birthdate</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
 
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">key</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">+</span>
-    <span class="ruby-identifier">last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first_vowel</span>     <span class="ruby-operator">+</span>
-    <span class="ruby-identifier">second_last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span>    <span class="ruby-operator">+</span>
-    <span class="ruby-identifier">name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span>                <span class="ruby-operator">+</span>
-    <span class="ruby-identifier">rfc_date</span>.<span class="ruby-identifier">year</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">-2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]               <span class="ruby-operator">+</span>
-    <span class="ruby-identifier">rfc_date</span>.<span class="ruby-identifier">month</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>, <span class="ruby-string">&quot;0&quot;</span>)        <span class="ruby-operator">+</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">key</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span>            <span class="ruby-operator">+</span>
+    <span class="ruby-identifier">last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first_vowel</span>                  <span class="ruby-operator">+</span>
+    (<span class="ruby-identifier">second_last_name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&#39;X&#39;</span>)    <span class="ruby-operator">+</span>
+    <span class="ruby-identifier">name</span>.<span class="ruby-identifier">remove_accents</span>.<span class="ruby-identifier">first</span>                             <span class="ruby-operator">+</span>
+    <span class="ruby-identifier">rfc_date</span>.<span class="ruby-identifier">year</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">-2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]                            <span class="ruby-operator">+</span>
+    <span class="ruby-identifier">rfc_date</span>.<span class="ruby-identifier">month</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>, <span class="ruby-string">&quot;0&quot;</span>)                     <span class="ruby-operator">+</span>
     <span class="ruby-identifier">rfc_date</span>.<span class="ruby-identifier">day</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>, <span class="ruby-string">&quot;0&quot;</span>)
-  ).<span class="ruby-identifier">upcase</span>
+  ).<span class="ruby-identifier">upcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
         </div>
@@ -246,7 +246,7 @@
 <p>1990-05-32 is an unreal date, so can&#39;t be create a key</p>
 
           <div class="method-source-code" id="real_date-source">
-            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/models/rfc.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">real_date</span>
   <span class="ruby-keyword">unless</span> (<span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span> <span class="ruby-identifier">birthdate</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">false</span>)
     <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:birthdate</span>, <span class="ruby-string">&#39;must be a real date&#39;</span>)
