@@ -2,13 +2,13 @@ class Rfc < ApplicationRecord
   attr_accessor :name, :last_name, :second_last_name, :birthdate
 
   # Presence validations
-  validates :name,              presence: true
-  validates :last_name,         presence: true
-  validates :birthdate,         presence: true
+  validates :name,              presence: true, on: :create
+  validates :last_name,         presence: true, on: :create
+  validates :birthdate,         presence: true, on: :create
 
   # Format Validations
-  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
-  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
+  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
+  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
   validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, allow_blank: true
 
   # Custom validations
