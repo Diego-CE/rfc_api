@@ -9,7 +9,9 @@ class RfcController < ApplicationController
     if new_rfc.valid?
       render json: new_rfc
     else
-      byebug
+      render json: {
+        message: new_rfc.errors.full_messages.join(", ")
+      }
     end
   end
 

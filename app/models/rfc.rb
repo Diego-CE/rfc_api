@@ -2,15 +2,15 @@ class Rfc < ApplicationRecord
   attr_accessor :name, :last_name, :second_last_name, :birthdate
 
   # Presence validations
-  validates :name,              presence: true, on: :create
-  validates :last_name,         presence: true, on: :create
-  validates :second_last_name,  presence: true, on: :create
-  validates :birthdate,         presence: true, on: :create
+  validates :name,              presence: true
+  validates :last_name,         presence: true
+  validates :second_last_name,  presence: true
+  validates :birthdate,         presence: true
 
   # Format Validations
-  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
-  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
-  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
+  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
+  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
+  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
 
   # Custom validations
   validate :real_date, on: :create
@@ -57,7 +57,7 @@ class Rfc < ApplicationRecord
       rfc_date.year.to_s[-2..-1]               +
       rfc_date.month.to_s.rjust(2, "0")        +
       rfc_date.day.to_s.rjust(2, "0")
-    ).upcase
+    ).upcase rescue nil
   end
 
 
