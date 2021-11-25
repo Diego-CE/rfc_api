@@ -73,9 +73,8 @@ RSpec.describe Rfc, type: :model do
   end
 
   it "count was increased" do
-    rfc = Rfc.new(rfc_valid_attributes)
-    rfc.save
-    rfc.save
+    Rfc.create(rfc_valid_attributes)
+    rfc = Rfc.create_if_not_exists(rfc_valid_attributes)
 
     expect(rfc.count).to eq 2
   end

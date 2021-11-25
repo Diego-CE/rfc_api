@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Rfcs Controller", type: :request do
+RSpec.describe "RFC Controller", type: :request do
   describe "GET /new" do
 
     let :req_params do

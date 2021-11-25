@@ -2,22 +2,21 @@ class Rfc < ApplicationRecord
   attr_accessor :name, :last_name, :second_last_name, :birthdate
 
   # Presence validations
-  validates :name,              presence: true
-  validates :last_name,         presence: true
-  validates :second_last_name,  presence: true
-  validates :birthdate,         presence: true
+  validates :name,              presence: true, on: :create
+  validates :last_name,         presence: true, on: :create
+  validates :second_last_name,  presence: true, on: :create
+  validates :birthdate,         presence: true, on: :create
 
   # Format Validations
-  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
-  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
-  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
+  validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
+  validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
+  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, on: :create
 
   # Custom validations
-  validate :real_date
+  validate :real_date, on: :create
 
   # Callbacks
   after_initialize :build_key
-  before_update :increase_count
 
   def real_date
     unless (Date.parse birthdate rescue false)
@@ -26,9 +25,9 @@ class Rfc < ApplicationRecord
   end
 
   def build_key
-    rfc_date = Date.parse birthdate
+    rfc_date = Date.parse birthdate rescue nil
 
-    self.key = (last_name.remove_accents.first +
+    self.key ||= (last_name.remove_accents.first +
       last_name.remove_accents.first_vowel     +
       second_last_name.remove_accents.first    +
       name.remove_accents.first                +
@@ -38,8 +37,16 @@ class Rfc < ApplicationRecord
     ).upcase
   end
 
-  def increase_count
-    self.count = count + 1
+  def self.create_if_not_exists(attr = {})
+    new_rfc = Rfc.new(attr)
+    rfc = Rfc.find_by_key(new_rfc.key)
+    if rfc.present?
+      rfc.update(count: rfc.count + 1)
+      return rfc
+    else
+      new_rfc.save
+      return new_rfc
+    end
   end
 
 end
