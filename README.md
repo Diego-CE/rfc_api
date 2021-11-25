@@ -9,6 +9,7 @@ This API is for generate a RFC (México), the service cannot generate the 'homoc
 **Usage**
 
 Visit: ´https://rfc-api-demo.herokuapp.com/rfc/new´
+`code`
 
 **Require parameters**
 ´´´
