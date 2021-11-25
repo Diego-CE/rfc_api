@@ -8,21 +8,22 @@ This API is for generate a RFC (México), the service cannot generate the 'homoc
 
 **Usage**
 
-Visit: ´https://rfc-api-demo.herokuapp.com/rfc/new´
-`code`
+Visit: https://rfc-api-demo.herokuapp.com/rfc/new
 
 **Require parameters**
-´´´
+```
 {
   "name": *String*,
   "last_name": *String*,
   "second_last_name": *String*,
   "birthdate": *String* (YYYY-MM-DD)
 }
+```
 
 **Response**
+```
 {
   "rfc": *String*,
   "count": *Integer*
 }
-
+```
