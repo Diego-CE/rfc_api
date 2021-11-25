@@ -18,12 +18,35 @@ class Rfc < ApplicationRecord
   # Callbacks
   after_initialize :build_key
 
+  # REAL DATE
+  #
+  # Custom validation for real date
+  #
+  # @example
+  #
+  # 1990-05-32 is an unreal date, so can't be create a key
   def real_date
     unless (Date.parse birthdate rescue false)
       errors.add(:birthdate, 'must be a real date')
     end
   end
 
+  # BUILD KEY
+  #
+  # Method for build de key.
+  # Uses the params now as attributes to build the key following the business rules
+  #
+  # +First 2 chars+ Came from the first char and first vowel of last name
+  #
+  # +Third char+ Came from the first char of second last name
+  #
+  # +Fourth char+ Came from the first char of name
+  #
+  # +Fifth and sixth chars+ Came from the last 2 digits of the birth year
+  #
+  # +Seventh char+ Came from birth month in 2 digits format ( january = 01 )
+  #
+  # +Eighth char+ Came from birth day in 2 digits format ( 1st = 01 )
   def build_key
     rfc_date = Date.parse birthdate rescue nil
 
@@ -37,6 +60,10 @@ class Rfc < ApplicationRecord
     ).upcase
   end
 
+
+  # CREATE OR UPDATE
+  #
+  # Custom method for handle the increase count when the key was asked before.
   def self.create_if_not_exists(attr = {})
     new_rfc = Rfc.new(attr)
     rfc = Rfc.find_by_key(new_rfc.key)

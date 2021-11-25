@@ -1,0 +1,4 @@
+app/controllers/rfc_controller.rb
+app/models/rfc.rb
+app/serializers/rfc_serializer.rb
+lib/extras/string.rb

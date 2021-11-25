@@ -1,5 +1,8 @@
 class RfcController < ApplicationController
 
+  # NEW
+  #
+  # Action for ask the RFC key
   def new
     new_rfc = Rfc.create_if_not_exists(rfc_params)
 
@@ -12,6 +15,7 @@ class RfcController < ApplicationController
 
   private
 
+  # STRONG PARAMS
   def rfc_params
     params.permit(:name, :last_name, :second_last_name, :birthdate)
   end

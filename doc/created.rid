@@ -1,0 +1,5 @@
+Wed, 24 Nov 2021 20:24:38 -0600
+app/controllers/rfc_controller.rb	Wed, 24 Nov 2021 20:18:37 -0600
+app/models/rfc.rb	Wed, 24 Nov 2021 20:24:26 -0600
+app/serializers/rfc_serializer.rb	Wed, 24 Nov 2021 20:20:53 -0600
+lib/extras/string.rb	Wed, 24 Nov 2021 17:22:18 -0600
