@@ -39,7 +39,7 @@ RSpec.describe Rfc, type: :model do
     it "have not second_last_name" do
       rfc = Rfc.new(rfc_valid_attributes)
       rfc.second_last_name = ""
-      expect(rfc).to_not be_valid
+      expect(rfc).to be_valid
     end
 
     it "have an invalid last_name" do
@@ -70,6 +70,11 @@ RSpec.describe Rfc, type: :model do
   it "build a valid key" do
     rfc = Rfc.new(rfc_valid_attributes)
     expect(rfc).to have_attributes(key: 'CAVN900529')
+  end
+
+  it "build a valid key without second last name" do
+    rfc = Rfc.new(name: 'Nancy', last_name: 'Chávez', birthdate: '1990-05-29')
+    expect(rfc).to have_attributes(key: 'CAXN900529')
   end
 
   it "count was increased" do

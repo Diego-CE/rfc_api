@@ -4,13 +4,12 @@ class Rfc < ApplicationRecord
   # Presence validations
   validates :name,              presence: true
   validates :last_name,         presence: true
-  validates :second_last_name,  presence: true
   validates :birthdate,         presence: true
 
   # Format Validations
   validates :name,              format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
   validates :last_name,         format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
-  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }
+  validates :second_last_name,  format: { with: /\A[\p{L}\p{M}]+\z/, message: 'only allow letters' }, allow_blank: true
 
   # Custom validations
   validate :real_date, on: :create
@@ -38,7 +37,7 @@ class Rfc < ApplicationRecord
   #
   # +First 2 chars+ Came from the first char and first vowel of last name
   #
-  # +Third char+ Came from the first char of second last name
+  # +Third char+ Came from the first char of second last name, if doesn't have a second last name then uses X
   #
   # +Fourth char+ Came from the first char of name
   #
@@ -50,12 +49,12 @@ class Rfc < ApplicationRecord
   def build_key
     rfc_date = Date.parse birthdate rescue nil
 
-    self.key ||= (last_name.remove_accents.first +
-      last_name.remove_accents.first_vowel     +
-      second_last_name.remove_accents.first    +
-      name.remove_accents.first                +
-      rfc_date.year.to_s[-2..-1]               +
-      rfc_date.month.to_s.rjust(2, "0")        +
+    self.key ||= (last_name.remove_accents.first            +
+      last_name.remove_accents.first_vowel                  +
+      (second_last_name.remove_accents.first rescue 'X')    +
+      name.remove_accents.first                             +
+      rfc_date.year.to_s[-2..-1]                            +
+      rfc_date.month.to_s.rjust(2, "0")                     +
       rfc_date.day.to_s.rjust(2, "0")
     ).upcase rescue nil
   end
